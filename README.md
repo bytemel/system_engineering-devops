@@ -1,3 +1,1 @@
-shell
-
-system engineering devops
+Shell Permissions Projects

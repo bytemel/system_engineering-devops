@@ -1,26 +1,19 @@
 #!/usr/bin/env bash
-# script to display info about our subdomains
+# Script that configures domain and displays information on subdomains
 
-sub_domain_info() {
-    local domain="$1"
-    local subdomain="$2"
 
-    if [ -z "$subdomain" ]; then
-        other_sub=("www" "lb-01" "web-01" "web-02")
-
-        for sub in "${other_sub[@]}"; do
-            final_path="$sub.$domain"
-            record_type=$(dig $final_path | grep -A1 'ANSWER SECTION:' | awk '{print $4}')
-            ip_address=$(dig $final_path | grep -A1 'ANSWER SECTION:' | awk '{print $5}')
-            echo The subdomain $sub is a $record_type record and points to $ip_address
-        done
-    else
-        final_path="$subdomain.$domain"
-        record_type=$(dig $final_path | grep -A1 'ANSWER SECTION:' | awk '{print $4}')
-        ip_address=$(dig $final_path | grep -A1 'ANSWER SECTION:' | awk '{print $5}')
-        echo The subdomain $subdomain is a $record_type record and points to $ip_address
-    fi
+print_info () {
+    line=$(dig "$1" | awk '/^'"$1"'/ {print $0}')
+    echo "$2 $line" | awk '{ print "The subdomain " $1 " is a " $5 " record and points to " $6}'
 }
 
 
-sub_domain_info "$1" "$2"
+if [ "$#" -eq 2 ]
+then
+    print_info "$2.$1" "$2"
+else
+    print_info "www.$1" "www"
+    print_info "lb-01.$1" "lb-01"
+    print_info "web-01.$1" "web-01"
+    print_info "web-02.$1" "web-02"
+fi

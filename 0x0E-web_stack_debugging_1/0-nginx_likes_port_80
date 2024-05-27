@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
-ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default # keep in sync
+# What keeps nginx from listening on port 80?
+# Configure nginx to run and listen on port 80
+
+rm /etc/nginx/sites-enabled/default
+ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 service nginx restart
-pkill -o nginx

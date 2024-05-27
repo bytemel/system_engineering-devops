@@ -1,4 +1,3 @@
 #!/usr/bin/env bash
-# script to initialize apache server
-echo "ServerName localhost" >> /etc/apache2.conf
+# Start Apache service
 service apache2 start
