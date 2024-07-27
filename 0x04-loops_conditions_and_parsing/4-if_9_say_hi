@@ -1,13 +1,16 @@
 #!/usr/bin/env bash
-# This script is displaying "Best school" 10 times while loop till 9th iteration
-i=0
-while [ $i -lt 10 ]
-do
-	echo "Best School"
-	if [ $i -eq 8 ]
-	then
-	echo "Hi"
-	fi
-	((i++))
-done
+# diplay "Best "school" and "hi" at 9 nth position
 
+name="Best School"
+
+counter=1
+
+while [ $counter -le 10 ]
+do
+	if [ $counter -eq 9 ]; then
+		echo "Hi"
+	else
+		echo "$name"
+	fi
+	((counter++))
+done

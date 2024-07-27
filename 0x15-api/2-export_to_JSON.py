@@ -1,35 +1,51 @@
 #!/usr/bin/python3
+""" Script that, using a REST API, for a given employee ID,
+returns information about his/her todo list progress.
 """
-Script using REST API
-Exports data in JSON format
-"""
-
+import csv
 import json
 import requests
 import sys
 
-
 if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Usage: python 0-gather_data_from_an_API.py <employee_id>")
+        sys.exit(1)
 
     employee_id = sys.argv[1]
-    base_url = "https://jsonplaceholder.typicode.com/users"
-    url = base_url + "/" + employee_id
+    URL = "https://jsonplaceholder.typicode.com/"
 
-    response = requests.get(url)
-    username = response.json().get("username")
+    user_response = requests.get(f"{URL}users/{employee_id}")
+    if user_response.status_code != 200:
+        print("Error: User not found")
+        sys.exit(1)
 
-    todo_url = url + "/todos"
-    response = requests.get(todo_url)
-    tasks = response.json()
+    user = user_response.json()
+    employee_name = user.get('username')
 
-    dictionary = {employee_id: []}
+    print(employee_name)
 
-    for task in tasks:
-        dictionary[employee_id].append({
-            "task": task.get("title"),
-            "completed": task.get("completed"),
-            "username": username
-        })
+    todos_response = requests.get(f"{URL}todos",
+                                  params={"userId": employee_id})
+    if todos_response.status_code != 200:
+        print("Error: Todos not found")
+        sys.exit(1)
+    todos = todos_response.json()
 
-    with open("{}.json".format(employee_id), "w") as json_file:
-        json.dump(dictionary, json_file)
+    json_file = f"{employee_id}.json"
+
+    tasks_list = []
+    for task in todos:
+        task_info = {
+            "task": task['title'],
+            "completed": task['completed'],
+            "username": employee_name,
+        }
+        tasks_list.append(task_info)
+
+    user_task = {employee_id: tasks_list}
+
+    with open(json_file, mode="w") as json_file:
+        json.dump(user_task, json_file)
+
+    print(f"Data exported to {json_file}")

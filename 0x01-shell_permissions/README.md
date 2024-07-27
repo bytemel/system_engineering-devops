@@ -1,1 +1,2 @@
-Changing User
+#!/bin/bash
+learning about linux permissions

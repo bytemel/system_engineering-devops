@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
-# Script that accepts one argument and runs the whoami command
-# under the user passed as an argument
 
+# check if script is provided with exactly on eargument
+if [ $# -ne 1 ]; then
+	echo "Usage: $) <user>"
+	exit 1
+fi
+
+#get the username 
 sudo -u "$1" whoami

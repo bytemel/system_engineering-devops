@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
-# This script is displaying "Best School" 10 times using while
-i=0
-while [ $i -lt 10 ]
+# Script for displaying "Best School" using while loop
+
+name="Best School"
+
+counter=1
+
+while [ $counter -le 10 ]
 do
-	echo "Best School"
-	((i++))
+	echo "$name"
+	((counter++))
 done

@@ -1,10 +1,20 @@
 #!/usr/bin/env bash
-# Install nginx web server
-# nginx must be listening on port 80
-# nginx must return a page that contains the string "Hello World!"
+# This file installs nginx web server on an ubuntu server
 
-sudo apt-get -y update
-sudo apt-get -y install nginx
-sudo ufw allow 'Nginx HTTP'
-echo "Hello World!" | sudo tee /var/www/html/index.html
-sudo service nginx start
+sudo apt update -y
+sudo apt install -y nginx
+
+sudo bash -c 'echo "server {
+    listen 80;
+    server_name _;
+
+    location / {
+        return 200 \"Hello World!\";
+    }
+}" > /etc/nginx/sites-available/default'
+
+# Restart Nginx
+sudo /etc/init.d/nginx restart
+
+# Display a message indicating successful configuration
+echo "Nginx has been configured. You can test it by running 'curl http://localhost/'
