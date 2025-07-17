@@ -1,12 +1,9 @@
 #!/usr/bin/env bash
-# Using 'until' to print "Best School" 10 times
+# This script prints "Best School" 10 times using an until loop
 
-name="Best School"
-
-counter=0
-
-until [ $counter -eq 10 ]
+i=1
+until [ $i -gt 10 ]
 do
-	echo "$name"
-	((counter++))
+  echo "Best School"
+  i=$((i + 1))
 done
